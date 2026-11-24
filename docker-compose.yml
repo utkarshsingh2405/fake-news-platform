@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: fake_news_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: fake_news_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fake_news_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: fake_news_backend
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/fake_news_db
+      SECRET_KEY: ${SECRET_KEY:-dev-secret-key-change-in-production}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-dev-jwt-secret}
+      ADMIN_EMAIL: admin@example.com
+      ADMIN_PASSWORD: Admin@123456
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - model_data:/app/ml/models
+    networks:
+      - fake_news_network
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: fake_news_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - fake_news_network
+
+networks:
+  fake_news_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  model_data:

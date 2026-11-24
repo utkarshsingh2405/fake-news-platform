@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GodSEye | AI-Powered Truth Verification</title>
+    <meta name="description" content="GodSEye — Omniscient AI surveillance for misinformation. Nothing escapes the God's Eye. Detect fake news instantly with real-time AI analysis." />
+    <!-- Tailwind CSS + Font Awesome + Google Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Google Identity Services for OAuth 2.0 Sign-In -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'sans': ['Inter', 'system-ui', 'sans-serif'],
+              'display': ['Outfit', 'system-ui', 'sans-serif'],
+            },
+            colors: {
+              neon: {
+                green: '#00FF87',
+                cyan: '#60EFFF',
+              },
+              dark: {
+                700: '#1e293b',
+                800: '#0f172a',
+                900: '#0b0f19',
+                950: '#050810',
+              },
+              primary: {
+                400: '#00FF87',
+                500: '#059669',
+                600: '#047857',
+              },
+              surface: {
+                50: '#0f1729',
+                100: '#0d1321',
+                200: '#0b0f19',
+                300: '#070a13',
+              }
+            },
+            animation: {
+              'float': 'float 6s ease-in-out infinite',
+              'float-slow': 'float 8s ease-in-out infinite',
+              'glow-pulse': 'glowPulse 3s ease-in-out infinite',
+              'fade-in': 'fadeIn 0.6s ease-out forwards',
+              'slide-up': 'slideUp 0.5s ease-out forwards',
+              'slide-down': 'slideDown 0.3s ease-out forwards',
+              'count-up': 'countUp 1s ease-out forwards',
+              'bar-fill': 'barFill 1s ease-out forwards',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-20px)' },
+              },
+              glowPulse: {
+                '0%, 100%': { opacity: '0.4' },
+                '50%': { opacity: '0.8' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slideUp: {
+                '0%': { transform: 'translateY(20px)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' },
+              },
+              slideDown: {
+                '0%': { transform: 'translateY(-10px)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' },
+              },
+              barFill: {
+                '0%': { width: '0%' },
+                '100%': { width: 'var(--bar-width)' },
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      /* ===== SERENDALE-INSPIRED DESIGN SYSTEM ===== */
+      
+      /* Base */
+      *, *::before, *::after { box-sizing: border-box; }
+      
+      body {
+        background-color: #070a13;
+        background-image: 
+          radial-gradient(ellipse at 15% 10%, rgba(0, 255, 135, 0.06) 0%, transparent 50%),
+          radial-gradient(ellipse at 85% 20%, rgba(96, 239, 255, 0.05) 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 80%, rgba(139, 92, 246, 0.04) 0%, transparent 50%);
+        background-attachment: fixed;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        color: #e2e8f0;
+        min-height: 100vh;
+      }
+
+      /* Glassmorphism Cards */
+      .glass {
+        background: rgba(15, 23, 41, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 1rem;
+      }
+
+      .glass-card {
+        background: linear-gradient(135deg, rgba(15, 23, 41, 0.8) 0%, rgba(7, 10, 19, 0.9) 100%);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 1.25rem;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .glass-card:hover {
+        border-color: rgba(0, 255, 135, 0.2);
+        box-shadow: 0 0 30px rgba(0, 255, 135, 0.08), 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+        transform: translateY(-2px);
+      }
+
+      .glass-panel {
+        background: linear-gradient(145deg, rgba(15, 23, 41, 0.6) 0%, rgba(7, 10, 19, 0.9) 100%);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 1.5rem;
+      }
+
+      /* Buttons */
+      .btn-primary {
+        background: linear-gradient(135deg, #00FF87, #60EFFF);
+        color: #070a13;
+        font-weight: 700;
+        border-radius: 0.75rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px -4px rgba(0, 255, 135, 0.4);
+        border: none;
+        cursor: pointer;
+      }
+      .btn-primary:hover {
+        box-shadow: 0 8px 30px -4px rgba(0, 255, 135, 0.6);
+        transform: translateY(-1px);
+      }
+      .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: #e2e8f0;
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 0.75rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .btn-secondary:hover {
+        border-color: rgba(0, 255, 135, 0.5);
+        background: rgba(0, 255, 135, 0.05);
+        color: #00FF87;
+      }
+
+      /* Input Fields */
+      .input-glass {
+        background: rgba(7, 10, 19, 0.8);
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        border-radius: 0.75rem;
+        padding: 0.875rem 1rem;
+        color: #f1f5f9;
+        transition: all 0.3s ease;
+        width: 100%;
+        font-size: 0.95rem;
+      }
+      .input-glass:focus {
+        outline: none;
+        border-color: #00FF87;
+        box-shadow: 0 0 0 3px rgba(0, 255, 135, 0.15);
+        background: rgba(7, 10, 19, 0.95);
+      }
+      .input-glass::placeholder {
+        color: #475569;
+      }
+      
+      textarea.input-glass {
+        resize: none;
+        line-height: 1.6;
+      }
+
+      /* Gradient Text */
+      .gradient-text {
+        background: linear-gradient(135deg, #00FF87, #60EFFF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Neon Eyebrow Labels */
+      .eyebrow {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #00FF87;
+      }
+
+      /* Result Glowing States */
+      .result-real {
+        border-color: rgba(0, 255, 135, 0.5) !important;
+        box-shadow: 0 0 40px rgba(0, 255, 135, 0.12), inset 0 0 20px rgba(0, 255, 135, 0.05) !important;
+      }
+      .result-fake {
+        border-color: rgba(239, 68, 68, 0.5) !important;
+        box-shadow: 0 0 40px rgba(239, 68, 68, 0.12), inset 0 0 20px rgba(239, 68, 68, 0.05) !important;
+      }
+      .result-suspicious {
+        border-color: rgba(245, 158, 11, 0.5) !important;
+        box-shadow: 0 0 40px rgba(245, 158, 11, 0.12), inset 0 0 20px rgba(245, 158, 11, 0.05) !important;
+      }
+
+      /* Stat Cards */
+      .stat-card {
+        position: relative;
+        overflow: hidden;
+      }
+      .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #00FF87, #60EFFF);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .stat-card:hover::before {
+        opacity: 1;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #070a13; }
+      ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+      /* Table */
+      .table-glass th {
+        background: rgba(15, 23, 41, 0.8);
+        color: #94a3b8;
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 1rem 1.25rem;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .table-glass td {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        color: #cbd5e1;
+        font-size: 0.875rem;
+      }
+      .table-glass tr:hover td {
+        background: rgba(0, 255, 135, 0.02);
+      }
+
+      /* Badge */
+      .badge-real {
+        background: rgba(0, 255, 135, 0.1);
+        color: #00FF87;
+        border: 1px solid rgba(0, 255, 135, 0.2);
+      }
+      .badge-fake {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
